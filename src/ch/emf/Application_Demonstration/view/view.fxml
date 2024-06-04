@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="589.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.emf.Application_Demonstration.view.View">
+   <children>
+      <Label text="Thymio Java Connect">
+         <font>
+            <Font size="26.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="70.0" />
+         </VBox.margin>
+      </Label>
+      <Label text="Demonstration application developped by Tom Yerly">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets top="25.0" />
+         </padding>
+      </Label>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ColorPicker fx:id="clpLed" disable="true" />
+            <Button fx:id="btnLed" disable="true" mnemonicParsing="false" onAction="#turnLedOn" text="Turn led on" GridPane.columnIndex="2" />
+            <ComboBox fx:id="cbbLed" disable="true" prefWidth="150.0" promptText="Choose led" GridPane.columnIndex="1" />
+         </children>
+         <padding>
+            <Insets top="100.0" />
+         </padding>
+      </GridPane>
+      <GridPane prefHeight="311.0" prefWidth="750.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="btnDisconnectController" disable="true" mnemonicParsing="false" onAction="#disconnectController" text="Disconnect from controller" GridPane.columnIndex="2" />
+            <Button fx:id="btnDisconnectThymio" disable="true" mnemonicParsing="false" onAction="#disconnectThymio" text="Disconnect from Thymio" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField fx:id="txtController" alignment="CENTER" disable="true" editable="false" text="Disconnected" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="20.0" right="20.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="txtThymio" alignment="CENTER" text="Thymio EMF1" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="20.0" right="20.0" />
+               </GridPane.margin>
+            </TextField>
+            <Button fx:id="btnConnectController" disable="true" mnemonicParsing="false" onAction="#connectController" text="Connect to controller" />
+            <Button fx:id="btnConnectThymio" mnemonicParsing="false" onAction="#connectThymio" text="Connect to Thymio" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+   </children>
+</VBox>

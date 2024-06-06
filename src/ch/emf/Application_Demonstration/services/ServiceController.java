@@ -18,19 +18,20 @@ import javafx.application.Platform;
 public class ServiceController extends Thread implements IServiceControllerForController {
 
     private IControllerForServiceController ctrl;
-    private final static XboxController xc = new XboxController();
+    private static XboxController xc = new XboxController();
     private volatile double leftMagnitude = 0.0;
     private volatile boolean running = false;
     private volatile int frequence = 0;
     private volatile int previousFrequence = 0;
     private volatile double direction = 0.0;
-    private volatile double previousDirection = 0.0;
 
     @Override
     public boolean connect() {
         if (!xc.isConnected()) {
             xc.release();
+            return false;
         }
+        
         xc.addXboxControllerListener(new XboxControllerAdapter() {
 
             @Override
@@ -108,14 +109,24 @@ public class ServiceController extends Thread implements IServiceControllerForCo
 
                 leftSpeed = Math.max(-500, Math.min(500, leftSpeed));
                 rightSpeed = Math.max(-500, Math.min(500, rightSpeed));
-
             }
-            ctrl.moveThymio(leftSpeed, rightSpeed);
+            if (ctrl != null) {
+                ctrl.moveThymio(leftSpeed, rightSpeed);
+            }
             try {
                 Thread.sleep(200);
-            } catch (InterruptedException ex) {
+                if (!xc.isConnected()) {
+                    if (ctrl != null) {
+                        ctrl.sendErrorMessage("The controller has been disconnected");
+                    }
+                    disconnect();
+                    this.join();
+                    break;
+                }
+            } catch (Exception ex) {
                 Logger.getLogger(ServiceController.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
 
     }
@@ -123,9 +134,12 @@ public class ServiceController extends Thread implements IServiceControllerForCo
     @Override
     public void disconnect() throws Exception {
         try {
-            xc.release();
             running = false;
-            ctrl = null;
+            xc.release();
+            if (ctrl != null) {
+                ctrl.moveThymio(0, 0);
+                ctrl = null;
+            }
         } catch (Exception e) {
             throw e;
         }

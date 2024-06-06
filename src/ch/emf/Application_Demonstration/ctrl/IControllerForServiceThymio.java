@@ -8,11 +8,8 @@ package ch.emf.Application_Demonstration.ctrl;
  *
  * @author YerlyT04
  */
-public interface IControllerForServiceController {
-
-    public boolean playSound(int frequence);
-
-    public boolean moveThymio(int motorLeftSpeed, int motorRightSpeed);
+public interface IControllerForServiceThymio {
     
     public void sendErrorMessage(String error);
+    
 }

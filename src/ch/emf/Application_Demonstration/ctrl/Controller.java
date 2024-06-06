@@ -14,7 +14,7 @@ import ch.emf.Application_Demonstration.services.ServiceThymio;
  *
  * @author YerlyT04
  */
-public class Controller implements IControllerForView, IControllerForServiceController {
+public class Controller implements IControllerForView, IControllerForServiceController, IControllerForServiceThymio {
 
     public IServiceControllerForController controller;
     public IServiceThymioForController thymio;
@@ -39,13 +39,14 @@ public class Controller implements IControllerForView, IControllerForServiceCont
     @Override
     public boolean connectThymio(String ThymioName) {
         synchronized (getInstance()) {
-            thymio = new ServiceThymio();
+            boolean ok = false;
             try {
-                return thymio.connect(ThymioName);
+                thymio = new ServiceThymio();
+                ok = thymio.connect(ThymioName);
             } catch (Exception ex) {
                 view.displayError(ex.getMessage());
             }
-            return false;
+            return ok;
         }
     }
 
@@ -76,7 +77,11 @@ public class Controller implements IControllerForView, IControllerForServiceCont
     @Override
     public boolean turnLedOn(int red, int green, int blue, String led) {
         synchronized (getInstance()) {
-            return thymio.turnLedOn(red, green, blue, led);
+            boolean ok = thymio.turnLedOn(red, green, blue, led);
+            if (!ok) {
+                view.displayError("The Thymio has been disconnected");
+            }
+            return ok;
         }
 
     }
@@ -84,14 +89,29 @@ public class Controller implements IControllerForView, IControllerForServiceCont
     @Override
     public boolean playSound(int frequence) {
         synchronized (getInstance()) {
-            return thymio.playSound(frequence);
+            boolean ok = thymio.playSound(frequence);
+            if (!ok) {
+                view.displayError("The Thymio has been disconnected");
+            }
+            return ok;
         }
     }
 
     @Override
     public boolean moveThymio(int motorLeftSpeed, int motorRightSpeed) {
         synchronized (getInstance()) {
-            return thymio.moveThymio(motorLeftSpeed, motorRightSpeed);
+            boolean ok = thymio.moveThymio(motorLeftSpeed, motorRightSpeed);
+            if (!ok) {
+                view.displayError("The Thymio has been disconnected");
+            }
+            return ok;
+        }
+    }
+
+    @Override
+    public void sendErrorMessage(String error) {
+        synchronized (getInstance()) {
+            view.displayError(error);
         }
     }
 
@@ -100,6 +120,7 @@ public class Controller implements IControllerForView, IControllerForServiceCont
             this.view = view;
         }
     }
+
     public void Start() {
         synchronized (getInstance()) {
             view.start();

@@ -4,6 +4,8 @@
  */
 package ch.emf.Application_Demonstration.services;
 
+import ch.emf.Application_Demonstration.ctrl.Controller;
+import ch.emf.Application_Demonstration.ctrl.IControllerForServiceThymio;
 import ch.emf.Thymio_Java_Connnect.services.ServiceThymioOrders;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +16,9 @@ import java.util.logging.Logger;
  */
 public class ServiceThymio implements IServiceThymioForController {
 
-    private ServiceThymioOrders thymio;
+    private IControllerForServiceThymio ctrl;
+    private volatile ServiceThymioOrders thymio;
+    private volatile boolean running;
 
     public ServiceThymio() {
         thymio = new ServiceThymioOrders();
@@ -23,26 +27,31 @@ public class ServiceThymio implements IServiceThymioForController {
     @Override
     public boolean connect(String ThymioName) throws Exception {
         thymio.connect(ThymioName);
+        setRefController(Controller.getInstance());
         try {
             Thread.sleep(5000);
         } catch (InterruptedException ex) {
             throw ex;
         }
         if (ServiceThymioOrders.isConnected && !ServiceThymioOrders.isReady) {
+            ctrl.sendErrorMessage("Thymio not recognized");
             disconnect();
-            Thread.sleep(5000);
-            thymio.connect(ThymioName);
+            return false;
         } else if (!ServiceThymioOrders.isConnected && !ServiceThymioOrders.isReady) {
+            ctrl.sendErrorMessage("Please open the Thymio suite app before trying to connect to the Thymio and check that the Thymio is connected.");
+            ctrl = null;
             return false;
         }
+        running = true;
         return true;
     }
 
     @Override
     public void disconnect() throws Exception {
         try {
+            running = false;
             thymio.disconnect();
-            Thread.sleep(5000);
+            ctrl = null;
         } catch (InterruptedException ex) {
             throw new Exception("Disconnection failed");
         }
@@ -61,6 +70,10 @@ public class ServiceThymio implements IServiceThymioForController {
     @Override
     public boolean turnLedOn(int red, int green, int blue, String led) {
         return thymio.turnLedOn(red, green, blue, led);
+    }
+
+    public void setRefController(IControllerForServiceThymio ctrl) {
+        this.ctrl = ctrl;
     }
 
 }

@@ -62,6 +62,7 @@ public class View implements Initializable, IViewForController {
 
     private ArrayList<String> lstLeds;
 
+    private boolean controllerAlreadyConnected;
     private boolean isControllerConnected;
     private boolean isThymioConnected;
 
@@ -138,11 +139,28 @@ public class View implements Initializable, IViewForController {
     public void displayError(String error) {
         synchronized (ctrl) {
             Platform.runLater(() -> {
+
+                String message = error;
+
+                if (error.equals("The controller has been disconnected.")) {
+                    disconnectController(new ActionEvent());
+                } else if (error.equals("The Thymio has been disconnected")) {
+                    ActionEvent event = new ActionEvent();
+                    disconnectController(event);
+                    disconnectThymio(event);
+                } else if (error.equals("Thymio not recognized")) {
+                    message = "The Thymio has not been recognized by Thymio suite. Check that the Thymio name appears in the Thymio suite application before trying a new connection.";
+                    disconnectThymio(new ActionEvent());
+                } else if (error.equals("Xbox problem")){
+                    message = "Due to a problem with the xbox controller library, it is not possible to reconnect to the controller. If you want to use the controller please restart this java application";
+                    thymioConnectedState();
+                }
+
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.initOwner(null);
                 alert.setTitle("Error occured");
                 alert.setHeaderText("See details :");
-                alert.setContentText(error);
+                alert.setContentText(message);
                 alert.showAndWait();
             });
         }
@@ -196,9 +214,16 @@ public class View implements Initializable, IViewForController {
     private void connectController(ActionEvent event) {
         synchronized (ctrl) {
             Platform.runLater(() -> {
-                if (ctrl.connectController()) {
-                    controllerConnectedState();
+                if (!controllerAlreadyConnected) {
+                    if (ctrl.connectController()) {
+                        controllerConnectedState();
+                        isControllerConnected = true;
+                        controllerAlreadyConnected = true;
+                    }
+                } else {
+                    displayError("Xbox problem");
                 }
+
             });
         }
     }

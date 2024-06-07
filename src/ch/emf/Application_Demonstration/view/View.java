@@ -142,7 +142,7 @@ public class View implements Initializable, IViewForController {
 
                 String message = error;
 
-                if (error.equals("The controller has been disconnected.")) {
+                if (error.equals("The controller is disconnected.")) {
                     disconnectController(new ActionEvent());
                 } else if (error.equals("The Thymio has been disconnected")) {
                     ActionEvent event = new ActionEvent();
@@ -152,8 +152,7 @@ public class View implements Initializable, IViewForController {
                     message = "The Thymio has not been recognized by Thymio suite. Check that the Thymio name appears in the Thymio suite application before trying a new connection.";
                     disconnectThymio(new ActionEvent());
                 } else if (error.equals("Xbox problem")){
-                    message = "Due to a problem with the xbox controller library, it is not possible to reconnect to the controller. If you want to use the controller please restart this java application";
-                    thymioConnectedState();
+                    message = "Due to a problem in the controller's communication library, it is not possible to reconnect without encountering a problem. If you still want to use the controller please restart this application.";
                 }
 
                 Alert alert = new Alert(AlertType.ERROR);
@@ -180,7 +179,7 @@ public class View implements Initializable, IViewForController {
                     if (!led.equals("top")) {
                         led = "bottom." + led;
                     }
-                    ctrl.turnLedOn(((int) clpLed.getValue().getRed() * 32), ((int) clpLed.getValue().getGreen() * 32), ((int) clpLed.getValue().getBlue() * 32), led);
+                    ctrl.turnLedOn(((int) Math.round(clpLed.getValue().getRed() * 32)), ((int) Math.round(clpLed.getValue().getGreen() * 32)), ((int) Math.round(clpLed.getValue().getBlue() * 32)), led);
                 } catch (NullPointerException e) {
                     displayError("Please choose a led");
                 }

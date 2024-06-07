@@ -16,9 +16,9 @@ import ch.emf.Application_Demonstration.services.ServiceThymio;
  */
 public class Controller implements IControllerForView, IControllerForServiceController, IControllerForServiceThymio {
 
-    public IServiceControllerForController controller;
-    public IServiceThymioForController thymio;
-    public IViewForController view;
+    private IServiceControllerForController controller;
+    private IServiceThymioForController thymio;
+    private IViewForController view;
 
     private Controller() {
         this.thymio = null;
@@ -31,7 +31,6 @@ public class Controller implements IControllerForView, IControllerForServiceCont
         synchronized (getInstance()) {
             controller = new ServiceController();
             boolean ok = controller.connect();
-            controller.start();
             return ok;
         }
     }
@@ -89,11 +88,15 @@ public class Controller implements IControllerForView, IControllerForServiceCont
     @Override
     public boolean playSound(int frequence) {
         synchronized (getInstance()) {
-            boolean ok = thymio.playSound(frequence);
+            if (frequence != 0) {
+                boolean ok = thymio.playSound(frequence);
             if (!ok) {
                 view.displayError("The Thymio has been disconnected");
             }
-            return ok;
+                return ok;
+            } else {
+                return true;
+            }
         }
     }
 

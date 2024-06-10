@@ -5,8 +5,9 @@
 package ch.emf.Application_Demonstration.services;
 
 /**
- *
+ * Interface including controller controller service methods
  * @author YerlyT04
+ * @version 1.0
  */
 public interface IServiceControllerForController {
 

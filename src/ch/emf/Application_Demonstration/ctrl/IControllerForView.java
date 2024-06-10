@@ -5,8 +5,9 @@
 package ch.emf.Application_Demonstration.ctrl;
 
 /**
- *
+ * Interface including View controller methods
  * @author YerlyT04
+ * @version 1.0
  */
 public interface IControllerForView {
 

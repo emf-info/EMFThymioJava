@@ -5,14 +5,10 @@
 package ch.emf.Application_Demonstration.view;
 
 import ch.emf.Application_Demonstration.ctrl.IControllerForView;
-import ch.emf.Thymio_Java_Connnect.services.ServiceThymioOrders;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,17 +26,32 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * FXML Controller class
+ * FXML Controller class The View class is responsible for handling the user
+ * interface of the application. It initializes the GUI components, manages the
+ * state transitions, and handles user interactions. It implements the
+ * Initializable and IViewForController interfaces.
  *
  * @author YerlyT04
+ * @version 1.0
  */
 public class View implements Initializable, IViewForController {
 
+    /**
+     * Attributes required to communicate with the controller, the GUI and to
+     * check the connections
+     */
     private IControllerForView ctrl;
-
     private Scene principalScene;
     private Stage mainStage;
     private ColorPicker colorPicker;
+    private boolean controllerAlreadyConnected;
+    private boolean isControllerConnected;
+    private boolean isThymioConnected;
+    private ArrayList<String> lstLeds;
+
+    /**
+     * Components of the GUI
+     */
     @FXML
     private Button btnLed;
     @FXML
@@ -60,23 +71,29 @@ public class View implements Initializable, IViewForController {
     @FXML
     private TextField txtThymio;
 
-    private ArrayList<String> lstLeds;
-
-    private boolean controllerAlreadyConnected;
-    private boolean isControllerConnected;
-    private boolean isThymioConnected;
-
+    /**
+     * Constructs a View instance and initializes the controller reference to
+     * null.
+     */
     public View() {
         this.ctrl = null;
     }
 
     /**
      * Initializes the controller class.
+     *
+     * @param url the location used to resolve relative paths for the root
+     * object, or null if the location is not known
+     * @param rb the resources used to localize the root object, or null if the
+     * root object was not localized
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
 
+    /**
+     * Starts the JavaFX application and sets up the main stage.
+     */
     @Override
     public void start() {
         Platform.startup(() -> {
@@ -91,6 +108,7 @@ public class View implements Initializable, IViewForController {
                 mainStage.setResizable(false);
                 mainStage.show();
 
+                //If the want to close the app
                 mainStage.setOnCloseRequest((WindowEvent e) -> {
                     if (isControllerConnected) {
                         disconnectController(new ActionEvent());
@@ -105,17 +123,22 @@ public class View implements Initializable, IViewForController {
                 System.out.println("Can't start the IHM because: " + ex);
                 Platform.exit();
             }
+            //add choices in the list
             lstLeds = new ArrayList<>();
             lstLeds.add("top");
             lstLeds.add("left");
             lstLeds.add("right");
             cbbLed.getItems().addAll(lstLeds);
 
+            //Sets the variables of the state of the connection to false
             isControllerConnected = false;
             isThymioConnected = false;
         });
     }
 
+    /**
+     * Updates the view to indicate that the Thymio robot is connected.
+     */
     @Override
     public void thymioConnected() {
         synchronized (ctrl) {
@@ -126,6 +149,9 @@ public class View implements Initializable, IViewForController {
 
     }
 
+    /**
+     * Updates the view to indicate that the controller is connected.
+     */
     @Override
     public void controllerConnected() {
         synchronized (ctrl) {
@@ -135,6 +161,11 @@ public class View implements Initializable, IViewForController {
         }
     }
 
+    /**
+     * Displays an error message in a dialog box.
+     *
+     * @param error the error message to display
+     */
     @Override
     public void displayError(String error) {
         synchronized (ctrl) {
@@ -144,14 +175,10 @@ public class View implements Initializable, IViewForController {
 
                 if (error.equals("The controller is disconnected.")) {
                     disconnectController(new ActionEvent());
-                } else if (error.equals("The Thymio has been disconnected")) {
-                    ActionEvent event = new ActionEvent();
-                    disconnectController(event);
-                    disconnectThymio(event);
                 } else if (error.equals("Thymio not recognized")) {
                     message = "The Thymio has not been recognized by Thymio suite. Check that the Thymio name appears in the Thymio suite application before trying a new connection.";
                     disconnectThymio(new ActionEvent());
-                } else if (error.equals("Xbox problem")){
+                } else if (error.equals("Xbox problem")) {
                     message = "Due to a problem in the controller's communication library, it is not possible to reconnect without encountering a problem. If you still want to use the controller please restart this application.";
                 }
 
@@ -166,10 +193,11 @@ public class View implements Initializable, IViewForController {
 
     }
 
-    public void setRefController(IControllerForView ctrl) {
-        this.ctrl = ctrl;
-    }
-
+    /**
+     * Handles the action to turn the LED on.
+     *
+     * @param event the action event
+     */
     @FXML
     private void turnLedOn(ActionEvent event) {
         synchronized (ctrl) {
@@ -179,6 +207,7 @@ public class View implements Initializable, IViewForController {
                     if (!led.equals("top")) {
                         led = "bottom." + led;
                     }
+                    //round the value to fit the Thymios obligations
                     ctrl.turnLedOn(((int) Math.round(clpLed.getValue().getRed() * 32)), ((int) Math.round(clpLed.getValue().getGreen() * 32)), ((int) Math.round(clpLed.getValue().getBlue() * 32)), led);
                 } catch (NullPointerException e) {
                     displayError("Please choose a led");
@@ -187,28 +216,11 @@ public class View implements Initializable, IViewForController {
         }
     }
 
-    @FXML
-    private void disconnectController(ActionEvent event) {
-        synchronized (ctrl) {
-            Platform.runLater(() -> {
-                ctrl.disconnectController();
-                isControllerConnected = false;
-                thymioConnectedState();
-            });
-        }
-    }
-
-    @FXML
-    private void disconnectThymio(ActionEvent event) {
-        synchronized (ctrl) {
-            Platform.runLater(() -> {
-                ctrl.disconnectThymio();
-                isThymioConnected = false;
-                initialState();
-            });
-        }
-    }
-
+    /**
+     * Handles the action to connect the controller.
+     *
+     * @param event the action event
+     */
     @FXML
     private void connectController(ActionEvent event) {
         synchronized (ctrl) {
@@ -227,6 +239,11 @@ public class View implements Initializable, IViewForController {
         }
     }
 
+    /**
+     * Handles the action to connect the Thymio robot.
+     *
+     * @param event the action event
+     */
     @FXML
     private void connectThymio(ActionEvent event) {
         synchronized (ctrl) {
@@ -239,6 +256,41 @@ public class View implements Initializable, IViewForController {
         }
     }
 
+    /**
+     * Handles the action to disconnect the controller.
+     *
+     * @param event the action event
+     */
+    @FXML
+    private void disconnectController(ActionEvent event) {
+        synchronized (ctrl) {
+            Platform.runLater(() -> {
+                ctrl.disconnectController();
+                isControllerConnected = false;
+                thymioConnectedState();
+            });
+        }
+    }
+
+    /**
+     * Handles the action to disconnect the Thymio robot.
+     *
+     * @param event the action event
+     */
+    @FXML
+    private void disconnectThymio(ActionEvent event) {
+        synchronized (ctrl) {
+            Platform.runLater(() -> {
+                ctrl.disconnectThymio();
+                isThymioConnected = false;
+                initialState();
+            });
+        }
+    }
+
+    /**
+     * Updates the view to its initial state.
+     */
     private void initialState() {
         synchronized (ctrl) {
             Platform.runLater(() -> {
@@ -255,6 +307,9 @@ public class View implements Initializable, IViewForController {
         }
     }
 
+    /**
+     * Updates the view to indicate that the controller is connected.
+     */
     private void controllerConnectedState() {
         synchronized (ctrl) {
             Platform.runLater(() -> {
@@ -267,6 +322,9 @@ public class View implements Initializable, IViewForController {
         }
     }
 
+    /**
+     * Updates the view to indicate that the Thymio robot is connected.
+     */
     private void thymioConnectedState() {
         synchronized (ctrl) {
             Platform.runLater(() -> {
@@ -281,6 +339,15 @@ public class View implements Initializable, IViewForController {
                 txtController.setText("Disconnected");
             });
         }
+    }
+
+    /**
+     * Sets the reference to the controller.
+     *
+     * @param ctrl the controller to set
+     */
+    public void setRefController(IControllerForView ctrl) {
+        this.ctrl = ctrl;
     }
 
 }

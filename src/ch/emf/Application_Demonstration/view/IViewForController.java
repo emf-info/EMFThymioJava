@@ -5,8 +5,11 @@
 package ch.emf.Application_Demonstration.view;
 
 /**
+ * Interface including controller view methods
  *
  * @author YerlyT04
+ * @version 1.0
+ *
  */
 public interface IViewForController {
 

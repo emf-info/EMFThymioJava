@@ -61,12 +61,6 @@ classDiagram
         + setRunning(boolean): void
     }
 
-    class Thread {
-    }
-
-    class WebSocketClient {
-    }
-
     class ServiceThymioCommunicator {
         + URL: String = "ws://localhost..." (readOnly)
         - thymio: Thymio
@@ -80,6 +74,12 @@ classDiagram
         + onError(Exception): void
     }
 
+    class WebSocketClient {
+    }
+
+    class Thread {
+    }
+
     class Thymio {
         - thymioNode: Node
         + Thymio()
@@ -87,15 +87,12 @@ classDiagram
         + setThymioNode(Node): void
     }
 
-    ServiceThymioOrders --^ ServiceThymioSender : thymioSender
-    ServiceThymioSender --^ Thread
-    ServiceThymioSender --^ ServiceThymioCommunicator : "uses"
-    ServiceThymioCommunicator --^ Thymio : thymio
-    Thymio --^ ServiceThymioCommunicator : thymio
-    ServiceThymioOrders -u-> Thread
-    ServiceThymioOrders -d-> WebSocketClient
-    ServiceThymioOrders -r-> ServiceThymioCommunicator
-    ServiceThymioOrders -r-> Thymio
+    ServiceThymioOrders --> ServiceThymioSender : thymioSender
+    ServiceThymioSender <|-- Thread
+    ServiceThymioCommunicator <|-- WebSocketClient
+    ServiceThymioSender --> ServiceThymioCommunicator : "uses"
+    ServiceThymioCommunicator --> Thymio : thymio
+    ServiceThymioSender --> Thymio : thymio
 ```
 ## Exemples d'utilisation
 Dans les points ci-dessous, des exemples d'utilisation pour se connecter, se déconnecter, bouger le **Thymio** ou encore lui demander de jouer un son ou d'allumer une led seront montrés. Pour plus d'informations sur les méthodes veuillez vous référencer à la [javadoc](https://github.com/emf-info-tpi/23-24-ThymioJavaConnect/tree/main/dist/javadoc)

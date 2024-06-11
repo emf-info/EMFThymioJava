@@ -36,8 +36,9 @@ Pour vérifier que la connexion avec le **Thymio** soit possible, il faut commen
 ### Vérifier que tout fonctionne
 Pour préparer, et vérifier que tout fonctionne, il faut d'abord [vérifer si la connexion est disponible au Thymio](#vérifier-que-lon-puisse-se-connecter-au-thymio) puis ensuite ajouter la librairie [**Thymio_Java_Connect**](https://github.com/emf-info/EMFThymioJava/tree/main/dist) (C'est le fichier .jar ;-)) dans votre projet java. Attention cette librairie nécéssite l'utilisation de 3 autres librairies qui peuvent être trouvées dans [le dossier lib de ce repos](https://github.com/emf-info/EMFThymioJava/tree/main/lib). Et maintenant tout est prêt !!!
 ## Diagramme de classes
+```mermaid
 classDiagram
-    class services::ServiceThymioOrders {
+    class ServiceThymioOrders {
         - thymioSender: ServiceThymioSender
         + ServiceThymioOrders()
         + connect(): void
@@ -47,7 +48,7 @@ classDiagram
         + ledOn(int, int, int, String): void
     }
 
-    class services::ServiceThymioSender {
+    class ServiceThymioSender {
         - thymioName: String
         - thymio: Thymio
         - isRunning: boolean
@@ -58,10 +59,10 @@ classDiagram
         + setRunning(boolean): void
     }
 
-    class services::ServiceThymioCommunicator {
+    class ServiceThymioCommunicator {
         - thymio: Thymio
         - name: String
-        + ServiceThymioCommunicator(thymio, String)
+        + ServiceThymioCommunicator(Thymio, String)
         + onOpen(HandshakeData): void
         + onClose(int, String, boolean): void
         + onError(Exception): void
@@ -74,7 +75,7 @@ classDiagram
     class Thread {
     }
 
-    class models::Thymio {
+    class Thymio {
         - thymioNode: Node
         + Thymio()
         + getThymioNode(): Node
@@ -84,12 +85,13 @@ classDiagram
     class Node {
     }
 
-    services::ServiceThymioOrders --|> services::ServiceThymioSender
-    services::ServiceThymioSender --> services::ServiceThymioCommunicator : "uses"
-    services::ServiceThymioCommunicator --> models::Thymio : " -thymio"
-    services::ServiceThymioSender --> models::Thymio : " -thymio"
-    services::ServiceThymioCommunicator --> WebSocketClient : " <.. "
-    services::ServiceThymioOrders --|> Thread
+    ServiceThymioOrders --|> ServiceThymioSender
+    ServiceThymioSender --> ServiceThymioCommunicator : "uses"
+    ServiceThymioCommunicator --> Thymio : " -thymio"
+    ServiceThymioSender --> Thymio : " -thymio"
+    ServiceThymioCommunicator --> WebSocketClient : " <.. "
+    ServiceThymioOrders --|> Thread
+```
 
 ## Exemples d'utilisation
 Dans les points ci-dessous, des exemples d'utilisation pour se connecter, se déconnecter, bouger le **Thymio** ou encore lui demander de jouer un son ou d'allumer une led seront montrés. Pour plus d'informations sur les méthodes veuillez vous référencer à la [javadoc](https://github.com/emf-info-tpi/23-24-ThymioJavaConnect/tree/main/dist/javadoc)

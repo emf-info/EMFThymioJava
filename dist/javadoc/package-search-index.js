@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ch.emf.Application_Demonstration.app"},{"l":"ch.emf.Application_Demonstration.ctrl"},{"l":"ch.emf.Application_Demonstration.services"},{"l":"ch.emf.Application_Demonstration.view"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ch.emf.Thymio_Java_Connnect.models"},{"l":"ch.emf.Thymio_Java_Connnect.services"},{"l":"mobsya.fb"}];updateSearchResults();

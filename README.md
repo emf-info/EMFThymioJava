@@ -72,7 +72,7 @@ Thymio nous permet aussi de jouer un son. Pour se faire, il faut utiliser la mé
 ```Java
 //thymio est l'instance du ServiceThymioOrders créé précédemment. ok vaut true si l'ordre à bien été envoyé false si l'ordre n'a pas été envoyé.
 //Ici les valeurs possibles pour la fréquence sont entre 16 et 20'000 compris.
-//Thymio joue un son à une fréquence de 1000
+//Thymio joue un son à une fréquence de 1000Hz
 int frequence = 1000;
 boolean ok = thymio.playSound(frequence);
 ```

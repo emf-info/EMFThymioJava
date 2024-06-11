@@ -39,13 +39,15 @@ Pour préparer, et vérifier que tout fonctionne, il faut d'abord [vérifer si l
 ```mermaid
 classDiagram
     class ServiceThymioOrders {
+        - isConnected: boolean = false
+        - isReady: boolean = false
         - thymioSender: ServiceThymioSender
-        + ServiceThymioOrders()
+        - thymioName: String
         + connect(): void
         + disconnect(): void
-        + moveThymio(int, int): void
-        + playSound(int, int, String): void
-        + ledOn(int, int, int, String): void
+        + moveThymio(int, int): boolean
+        + playSound(int): boolean
+        + turnLedOn(int, int, int, String): boolean
     }
 
     class ServiceThymioSender {
@@ -54,19 +56,22 @@ classDiagram
         - isRunning: boolean
         - programList: ArrayList<String>
         + ServiceThymioSender(String)
+        + sendProgram(String): boolean
         + run(): void
-        + sendProgram(String): void
         + setRunning(boolean): void
     }
 
     class ServiceThymioCommunicator {
+        + URL: String = "ws://localhost..." (readOnly)
         - thymio: Thymio
         - name: String
         + ServiceThymioCommunicator(Thymio, String)
-        + onOpen(HandshakeData): void
+        + ServiceThymioCommunicator(Thymio, String, String)
+        + onOpen(ServerHandshake): void
+        + onMessage(String): void
+        + onMessage(ByteBuffer): void
         + onClose(int, String, boolean): void
         + onError(Exception): void
-        + onMessage(String): void
     }
 
     class WebSocketClient {
@@ -85,12 +90,12 @@ classDiagram
     class Node {
     }
 
-    ServiceThymioOrders --|> ServiceThymioSender
+    ServiceThymioOrders --> ServiceThymioSender : thymioSender
     ServiceThymioSender --> ServiceThymioCommunicator : "uses"
-    ServiceThymioCommunicator --> Thymio : " -thymio"
-    ServiceThymioSender --> Thymio : " -thymio"
-    ServiceThymioCommunicator --> WebSocketClient : " <.. "
-    ServiceThymioOrders --|> Thread
+    ServiceThymioCommunicator --> Thymio : thymio
+    ServiceThymioSender --> Thymio : thymio
+    ServiceThymioCommunicator <.. WebSocketClient : " "
+    ServiceThymioOrders --> Thread
 ```
 
 ## Exemples d'utilisation

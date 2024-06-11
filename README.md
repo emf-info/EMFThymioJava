@@ -36,6 +36,7 @@ Pour vérifier que la connexion avec le **Thymio** soit possible, il faut commen
 ### Vérifier que tout fonctionne
 Pour préparer, et vérifier que tout fonctionne, il faut d'abord [vérifer si la connexion est disponible au Thymio](#vérifier-que-lon-puisse-se-connecter-au-thymio) puis ensuite ajouter la librairie [**Thymio_Java_Connect**](https://github.com/emf-info/EMFThymioJava/tree/main/dist) (C'est le fichier .jar ;-)) dans votre projet java. Attention cette librairie nécéssite l'utilisation de 3 autres librairies qui peuvent être trouvées dans [le dossier lib de ce repos](https://github.com/emf-info/EMFThymioJava/tree/main/lib). Et maintenant tout est prêt !!!
 ## Diagramme de classes
+```mermaid
 classDiagram
     class ServiceThymioOrders {
         - isConnected: boolean = false

@@ -46,7 +46,7 @@ classDiagram
         + connect() void
         + disconnect() void
         + moveThymio(int, int) boolean
-        + playSound(int): boolean
+        + playSound(int) boolean
         + turnLedOn(int, int, int, String): boolean
     }
 
@@ -67,11 +67,11 @@ classDiagram
         - name String
         + ServiceThymioCommunicator(Thymio, String)
         + ServiceThymioCommunicator(Thymio, String, String)
-        + onOpen(ServerHandshake): void
-        + onMessage(String): void
-        + onMessage(ByteBuffer): void
-        + onClose(int, String, boolean): void
-        + onError(Exception): void
+        + onOpen(ServerHandshake) void
+        + onMessage(String) void
+        + onMessage(ByteBuffer) void
+        + onClose(int, String, boolean) void
+        + onError(Exception) void
     }
 
     class WebSocketClient {
@@ -83,8 +83,8 @@ classDiagram
     class Thymio {
         - thymioNode: Node
         + Thymio()
-        + getThymioNode(): Node
-        + setThymioNode(Node): void
+        + getThymioNode() Node
+        + setThymioNode(Node) void
     }
 
     ServiceThymioOrders --> ServiceThymioSender : thymioSender

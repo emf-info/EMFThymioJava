@@ -39,32 +39,32 @@ Pour préparer, et vérifier que tout fonctionne, il faut d'abord [vérifer si l
 ```mermaid
 classDiagram
     class ServiceThymioOrders {
-        - isConnected: boolean = false
-        - isReady: boolean = false
-        - thymioSender: ServiceThymioSender
-        - thymioName: String
-        + connect(): void
-        + disconnect(): void
-        + moveThymio(int, int): boolean
+        - isConnected boolean = false
+        - isReady boolean = false
+        - thymioSender ServiceThymioSender
+        - thymioName String
+        + connect() void
+        + disconnect() void
+        + moveThymio(int, int) boolean
         + playSound(int): boolean
         + turnLedOn(int, int, int, String): boolean
     }
 
     class ServiceThymioSender {
-        - thymioName: String
-        - thymio: Thymio
-        - isRunning: boolean
-        - programList: ArrayList<String>
+        - thymioName String
+        - thymio Thymio
+        - isRunning boolean
+        - programList ArrayList<String>
         + ServiceThymioSender(String)
-        + sendProgram(String): boolean
-        + run(): void
-        + setRunning(boolean): void
+        + sendProgram(String) boolean
+        + run() void
+        + setRunning(boolean) void
     }
 
     class ServiceThymioCommunicator {
-        + URL: String = "ws://localhost..." (readOnly)
-        - thymio: Thymio
-        - name: String
+        + URL String = "ws://localhost..." (readOnly)
+        - thymio Thymio
+        - name String
         + ServiceThymioCommunicator(Thymio, String)
         + ServiceThymioCommunicator(Thymio, String, String)
         + onOpen(ServerHandshake): void

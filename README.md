@@ -18,7 +18,7 @@
 
 
 ## ThymioJavaConnect QESAKO?
-**ThymioJavaConnect** est le résultat de la réalisation d'un TPI de fin d'apprentissage permettant d'utiliser **Thymio** avec Java. Le but de cette librairie est de mettre en place une solution qui permet d'être utilisé lors des modules de développement lors d'apprentissages à l'**EMF**. Cette librairie est permet pour l'instant l'envoi de ordre. Voici un liste résumant toutes les actions possible avec cette librairie via l'application **Thymio Suite** :
+**ThymioJavaConnect** est le résultat de la réalisation d'un TPI de fin d'apprentissage permettant d'utiliser **Thymio** avec Java. Le but de cette librairie est de mettre en place une solution qui permet d'être utilisée lors des modules de développement lors d'apprentissages à l'**EMF**. Cette librairie est permet pour l'instant l'envoi d'ordres mais pas encore la récupération des données des capteurs. Voici un liste résumant toutes les actions possible avec cette librairie via l'application **Thymio Suite** :
 - Se connecter au Thymio
 - Se déconnecter au Thymio
 - Piloter le Thymio
@@ -36,6 +36,61 @@ Pour vérifier que la connexion avec le **Thymio** soit possible, il faut commen
 ### Vérifier que tout fonctionne
 Pour préparer, et vérifier que tout fonctionne, il faut d'abord [vérifer si la connexion est disponible au Thymio](#vérifier-que-lon-puisse-se-connecter-au-thymio) puis ensuite ajouter la librairie [**Thymio_Java_Connect**](https://github.com/emf-info/EMFThymioJava/tree/main/dist) (C'est le fichier .jar ;-)) dans votre projet java. Attention cette librairie nécéssite l'utilisation de 3 autres librairies qui peuvent être trouvées dans [le dossier lib de ce repos](https://github.com/emf-info/EMFThymioJava/tree/main/lib). Et maintenant tout est prêt !!!
 ## Diagramme de classes
+classDiagram
+    class services::ServiceThymioOrders {
+        - thymioSender: ServiceThymioSender
+        + ServiceThymioOrders()
+        + connect(): void
+        + disconnect(): void
+        + moveThymio(int, int): void
+        + playSound(int, int, String): void
+        + ledOn(int, int, int, String): void
+    }
+
+    class services::ServiceThymioSender {
+        - thymioName: String
+        - thymio: Thymio
+        - isRunning: boolean
+        - programList: ArrayList<String>
+        + ServiceThymioSender(String)
+        + run(): void
+        + sendProgram(String): void
+        + setRunning(boolean): void
+    }
+
+    class services::ServiceThymioCommunicator {
+        - thymio: Thymio
+        - name: String
+        + ServiceThymioCommunicator(thymio, String)
+        + onOpen(HandshakeData): void
+        + onClose(int, String, boolean): void
+        + onError(Exception): void
+        + onMessage(String): void
+    }
+
+    class WebSocketClient {
+    }
+
+    class Thread {
+    }
+
+    class models::Thymio {
+        - thymioNode: Node
+        + Thymio()
+        + getThymioNode(): Node
+        + setThymioNode(Node): void
+    }
+
+    class Node {
+    }
+
+    services::ServiceThymioOrders --|> services::ServiceThymioSender
+    services::ServiceThymioSender --> services::ServiceThymioCommunicator : "uses"
+    services::ServiceThymioCommunicator --> models::Thymio : " -thymio"
+    services::ServiceThymioSender --> models::Thymio : " -thymio"
+    services::ServiceThymioCommunicator --> WebSocketClient : " <.. "
+    services::ServiceThymioOrders --|> Thread
+
 ## Exemples d'utilisation
 Dans les points ci-dessous, des exemples d'utilisation pour se connecter, se déconnecter, bouger le **Thymio** ou encore lui demander de jouer un son ou d'allumer une led seront montrés. Pour plus d'informations sur les méthodes veuillez vous référencer à la [javadoc](https://github.com/emf-info-tpi/23-24-ThymioJavaConnect/tree/main/dist/javadoc)
 ### Exemple 1 - Se connecter

@@ -92,11 +92,10 @@ classDiagram
     ServiceThymioSender --^ ServiceThymioCommunicator : "uses"
     ServiceThymioCommunicator --^ Thymio : thymio
     Thymio --^ ServiceThymioCommunicator : thymio
-    ServiceThymioOrders -up-> Thread
-    ServiceThymioOrders -down-> WebSocketClient
-    ServiceThymioOrders -right-> ServiceThymioCommunicator
-    ServiceThymioOrders -right-> Thymio
-
+    ServiceThymioOrders -u-> Thread
+    ServiceThymioOrders -d-> WebSocketClient
+    ServiceThymioOrders -r-> ServiceThymioCommunicator
+    ServiceThymioOrders -r-> Thymio
 ```
 ## Exemples d'utilisation
 Dans les points ci-dessous, des exemples d'utilisation pour se connecter, se déconnecter, bouger le **Thymio** ou encore lui demander de jouer un son ou d'allumer une led seront montrés. Pour plus d'informations sur les méthodes veuillez vous référencer à la [javadoc](https://github.com/emf-info-tpi/23-24-ThymioJavaConnect/tree/main/dist/javadoc)

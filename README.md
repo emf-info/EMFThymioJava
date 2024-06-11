@@ -149,8 +149,8 @@ boolean ok = thymio.turnLedOn(red,green,blue,led);
 ```
 ### Exemple 6 - Un projet fonctionnel
 Bon, bien que les exemples soit très simples, une application de démonstration est disponible dans [ce repos GitHub](https://github.com/emf-info-tpi/23-24-ThymioJavaConnect/tree/main). Cette application permet de controller le Thymio avec une manette de Xbox. Voici une image qui montre à quoi cette application ressemble :
-<center>
+
 ![Application de démontration](https://github.com/emf-info/EMFThymioJava/blob/main/applicaitonDemo.png)
-</center>
+
 ## Réaliser votre projet
 A votre tour de vous amuser et de créer un projet fantastique! Faites libre cours à votre imagination

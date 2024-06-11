@@ -109,7 +109,7 @@ thymio.connect(name);
 ### Exemple 2 - Se déconnecter
 Maintenant que nous nous sommes connectés, il nous faut aussi pouvoir nous déconnecter. Pour pouvoir se déconnecter, il suffit d'utiliser la méthode disconnect de la classe ServiceThymioOrders. Voyez ici un exemple :
 ```Java
-//thymio est l'instance du ServiceThymioOrders créé précédemment
+//thymio est l'instance du ServiceThymioOrders créée précédemment
 try{
     thymio.disconnect();
 } catch (InterruptedException ex) {
@@ -119,7 +119,7 @@ try{
 ### Exemple 3 - Bouger le Thymio
 Se connecter et se déconnecter ce n'est pas tout, il est aussi possible de faire bouger le Thymio en utilisant la méthode moveThymio de notre classe ServiceThymioOrders. Voyez l'exemple ci-dessous :
 ```Java
-//thymio est l'instance du ServiceThymioOrders créé précédemment. ok vaut true si l'ordre à bien été envoyé false si l'ordre n'a pas été envoyé.
+//thymio est l'instance du ServiceThymioOrders créée précédemment. ok vaut true si l'ordre à bien été envoyé false si l'ordre n'a pas été envoyé.
 //Ici les valeurs possibles pour la vitesse de chaque moteur se trouve entre -500 et 500 compris.
 //Thymio avance tout droit à vitesse max
 int moteurGauche = 500;
@@ -129,7 +129,7 @@ boolean ok = thymio.moveThymio(moteurGauche, moteurDroite);
 ### Exemple 4 - Jouer un son
 Thymio nous permet aussi de jouer un son. Pour se faire, il faut utiliser la méthode playSound de la classe ServiceThymioOrders. Voici un exemple :
 ```Java
-//thymio est l'instance du ServiceThymioOrders créé précédemment. ok vaut true si l'ordre à bien été envoyé false si l'ordre n'a pas été envoyé.
+//thymio est l'instance du ServiceThymioOrders créée précédemment. ok vaut true si l'ordre à bien été envoyé false si l'ordre n'a pas été envoyé.
 //Ici les valeurs possibles pour la fréquence sont entre 16 et 20'000 compris.
 //Thymio joue un son à une fréquence de 1000Hz
 int frequence = 1000;
@@ -138,7 +138,7 @@ boolean ok = thymio.playSound(frequence);
 ### Exemple 5 - Allumer une led
 Pour finir il est aussi possible d'allumer une des leds du Thymio. Pour les allumer il faut utiliser la méthode turnLedOn de la classe ServiceThymioOrders. Voici l'exemple :
 ```Java
-//thymio est l'instance du ServiceThymioOrders créé précédemment. ok vaut true si l'ordre à bien été envoyé false si l'ordre n'a pas été envoyé.
+//thymio est l'instance du ServiceThymioOrders créée précédemment. ok vaut true si l'ordre à bien été envoyé false si l'ordre n'a pas été envoyé.
 //Ici les valeurs possibles pour red,green et blue sont entre 0 et 32 tandis que pour led les valeurs possibles sont top pour la led du haut, bottom.left pour la led bas gauche et bottom.right pour la led bottom bas droite
 //Thymio allume la led du haut en rouge
 int red = 32;

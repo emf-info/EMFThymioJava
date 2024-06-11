@@ -13,6 +13,7 @@
     3. [Exemple 3 - Bouger le Thymio](#exemple-3---bouger-le-thymio)
     4. [Exemple 4 - Jouer un son](#exemple-4---jouer-un-son)
     5. [Exemple 5 - Allumer une led](#exemple-5---allumer-une-led)
+    6. [Exemple 6 - Un projet fonctionnel](#exemple-6---un-projet-fonctionnel)
 5. [Réaliser votre projet](#réaliser-votre-projet)
 
 
@@ -87,5 +88,7 @@ int blue = 0;
 String led = "top";
 boolean ok = thymio.turnLedOn(red,green,blue,led);
 ```
+### Exemple 6 - Un projet fonctionnel
+
 ## Réaliser votre projet
 A votre tour de vous amuser et de créer un projet fantastique! Faites libre cours à votre imagination

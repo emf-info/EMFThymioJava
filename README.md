@@ -90,7 +90,7 @@ classDiagram
     ServiceThymioOrders --> ServiceThymioSender : thymioSender
     ServiceThymioSender <|-- Thread
     ServiceThymioCommunicator <|-- WebSocketClient
-    ServiceThymioSender --> ServiceThymioCommunicator : "uses"
+    ServiceThymioSender --> ServiceThymioCommunicator : "use"
     ServiceThymioCommunicator --> Thymio : thymio
     ServiceThymioSender --> Thymio : thymio
 ```

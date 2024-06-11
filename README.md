@@ -36,6 +36,7 @@ Pour vérifier que la connexion avec le **Thymio** soit possible, il faut commen
 ### Vérifier que tout fonctionne
 Pour préparer, et vérifier que tout fonctionne, il faut d'abord [vérifer si la connexion est disponible au Thymio](#vérifier-que-lon-puisse-se-connecter-au-thymio) puis ensuite ajouter la librairie [**Thymio_Java_Connect**](https://github.com/emf-info/EMFThymioJava/tree/main/dist) (C'est le fichier .jar ;-)) dans votre projet java. Attention cette librairie nécéssite l'utilisation de 3 autres librairies qui peuvent être trouvées dans [le dossier lib de ce repos](https://github.com/emf-info/EMFThymioJava/tree/main/lib). Et maintenant tout est prêt !!!
 ## Diagramme de classes
+Dans ce diagramme, on peut y retrouver 3 classes principales. Premièrement la classe ServiceThymioOrders qui va permettre d'envoyer des ordres au Thymio (c'est celle que l'on va utiliser). Puis on peut voir la classe ServiceThymioSender, cette classe s'occupe d'envoyer les ordres tant que l'on est connecté. Et pour finir, on peut retrouver la classe ServiceThymioCommunicator qui va recevoir les message de la communication asynchrone avec Thymio Suite. Voici le diagramme :
 ```mermaid
 classDiagram
     class ServiceThymioOrders {
